@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: YouTubeSearch
+
+youtube:
+  api:
+    base-url: https://www.googleapis.com/youtube/v3
+    key:
+    default-max-results: 10
+
