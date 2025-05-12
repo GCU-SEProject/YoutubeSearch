@@ -1,2 +1,2 @@
 .idea/
-/config/application-secret.yml
+/src/main/resources/config/application-secret.yml
