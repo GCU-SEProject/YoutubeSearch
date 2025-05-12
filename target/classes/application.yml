@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: YouTubeSearch
+  config:
+    import: optional:config/application-secret.yml
+
+youtube:
+  api:
+    base-url: https://www.googleapis.com/youtube/v3
+    key: ${youtube.api.key}
+    default-max-results: 10
