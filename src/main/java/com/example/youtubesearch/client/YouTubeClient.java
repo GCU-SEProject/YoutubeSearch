@@ -2,6 +2,7 @@ package com.example.youtubesearch.client;
 
 import com.example.youtubesearch.vo.YouTubeSearchResponse;
 import com.example.youtubesearch.exception.YouTubeApiException;
+import com.example.youtubesearch.vo.YouTubeVideoDetailsResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
@@ -38,5 +39,21 @@ public class YouTubeClient {
                         clientResponse -> clientResponse.bodyToMono(String.class)
                                 .flatMap(errorBody -> Mono.error(new YouTubeApiException("YouTube API error: " + errorBody))))
                 .bodyToMono(YouTubeSearchResponse.class);
+    }
+
+    public Mono<YouTubeVideoDetailsResponse> getVideoDetails(String videoIds) {
+        return youtubeWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/videos")
+                        .queryParam("part", "snippet,statistics")
+                        .queryParam("id", videoIds)
+                        .queryParam("key", apiKey)
+                        .build()
+                )
+                .retrieve()
+                .onStatus(HttpStatusCode::isError,
+                        resp -> resp.bodyToMono(String.class)
+                                .flatMap(body -> Mono.error(new YouTubeApiException("YouTube API error: " + body))))
+                .bodyToMono(YouTubeVideoDetailsResponse.class);
     }
 }
